@@ -10,7 +10,7 @@ parser.add_argument("-path", "--path", type=str,
                     default="D:\\\\combined/*.json")
 parser.add_argument("-func", "--func", type=str,
                     help="Input the traversal algorithm (po/r/cmp), if not specified: Post Order",
-                    default="po", choices=['po', 'r', 'cmp'])
+                    default="diff", choices=['po', 'r', 'cmp'])
 args = parser.parse_args()
 
 OBJECT = "children"
@@ -38,14 +38,10 @@ def postorder_traversal(searchlist):
         cur_son = child_mas.popleft()
         if isinstance(cur_son, dict) and OBJECT in cur_son:
             cur_list = cur_son[OBJECT]
-            tmp_queue = deque()
-            tmp_len = 0
+            child_mas.append(len(cur_list))
             for tmp_son in cur_list:
                 if tmp_son is not None:
-                    tmp_queue.append(tmp_son)
-                    tmp_len += 1
-            tmp_queue.append(tmp_len)
-            child_mas.extendleft(tmp_queue)
+                    child_mas.appendleft(tmp_son)
         elif isinstance(cur_son, int):
             if max_sons < cur_son:
                 max_sons = cur_son
